@@ -33,21 +33,19 @@ export default {
     const store = useStore();
     const route = useRoute();
     const currentPage = computed(() => {
-      const page = Number(route.query.page);
-      if (route.query.page === 0) {
+      const { page } = route.query;
+      if (page === undefined) {
         return 1;
       } else {
-        return page;
+        return Number(page);
       }
     });
 
     watchEffect(() => {
-      if (isNaN(currentPage.value) === false) {
-        store.dispatch("setItemsAsync", {
-          page: currentPage.value,
-          limit: 5,
-        });
-      }
+      store.dispatch("setItemsAsync", {
+        page: currentPage.value,
+        limit: 5,
+      });
     });
 
     return {
